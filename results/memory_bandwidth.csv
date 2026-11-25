@@ -1,0 +1,8 @@
+date,console,tool,memory_kind,read_gbs,write_gbs,copy_gbs,notes
+2026-11-25,ps4-pro,pm4bridge t_copybw,KFD userptr (CPU-cached),18.2,7.3,9.1,256 MB; flat across wave counts and load widths
+2026-11-25,ps4-pro,pm4bridge t_vrambw,libdrm GTT BO (CPU-cached),18.1,7.3,9.0,256 MB
+2026-11-25,ps4-pro,pm4bridge t_vrambw,libdrm GTT BO CPU_GTT_USWC (write-combined),167,111,56,256 MB; 176 GB/s read at 256 dwords/item
+2026-11-25,ps4-pro,vkbw (Vulkan),HOST_CACHED (type 5),18.2,7.2,9.3,32 MB
+2026-11-25,ps4-pro,vkbw (Vulkan),DEVICE_LOCAL+HOST_VISIBLE (real VRAM carve-out),161,107,57,32 MB; residency verified via mem_info_vram_used
+2026-11-25,ps4-pro,vkbw (Vulkan),HOST_VISIBLE non-cached (GTT write-combined),159,110,56,32 MB
+2026-11-25,ps4-pro,memcpy (CPU),system RAM,n/a,n/a,5.25,single thread reference

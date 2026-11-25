@@ -1,0 +1,14 @@
+date,console,model,quant,size_gib,backend,ngl,env,test,tok_s,stdev,llama_cpp,mesa,kernel,notes
+2026-11-25,ps4-pro,Qwen3-0.6B,Q8_0,0.59,cpu,0,GGML_VK_VISIBLE_DEVICES=,pp128,53.78,0.00,244640b,n/a,7.3.4-strawberry,8 Jaguar threads; GPU hidden
+2026-11-25,ps4-pro,Qwen3-0.6B,Q8_0,0.59,cpu,0,GGML_VK_VISIBLE_DEVICES=,tg32,22.92,0.00,244640b,n/a,7.3.4-strawberry,8 Jaguar threads; GPU hidden
+2026-11-25,ps4-pro,Qwen3-4B,Q4_K_M,2.32,cpu,0,GGML_VK_VISIBLE_DEVICES=,tg32,5.58,0.00,244640b,n/a,7.3.4-strawberry,8 Jaguar threads; GPU hidden
+2026-11-25,ps4-pro,Qwen3-0.6B,Q8_0,0.59,vulkan,99,default (cached memory),pp128,1164.06,29.93,244640b,26.3.1+ps4-0001,7.3.4-strawberry (stock; no KFD),pre-fix memory placement; first GPU run
+2026-11-25,ps4-pro,Qwen3-0.6B,Q8_0,0.59,vulkan,99,default (cached memory),tg32,22.89,0.05,244640b,26.3.1+ps4-0001,7.3.4-strawberry (stock; no KFD),pre-fix memory placement
+2026-11-25,ps4-pro,Qwen3-0.6B,Q8_0,0.59,vulkan,99,default (cached memory),pp128,790.32,0.10,244640b,26.3.1+ps4-0001,7.3.4-strawberry+kfd-v2,pre-fix memory placement
+2026-11-25,ps4-pro,Qwen3-0.6B,Q8_0,0.59,vulkan,99,default (cached memory),tg32,23.03,0.01,244640b,26.3.1+ps4-0001,7.3.4-strawberry+kfd-v2,pre-fix memory placement
+2026-11-25,ps4-pro,Qwen3-4B,Q4_K_M,2.32,vulkan,99,default (cached memory),pp128,93.98,0.59,244640b,26.3.1+ps4-0001,7.3.4-strawberry,pre-fix memory placement
+2026-11-25,ps4-pro,Qwen3-4B,Q4_K_M,2.32,vulkan,99,default (cached memory),tg32,6.64,0.00,244640b,26.3.1+ps4-0001,7.3.4-strawberry+kfd-v3,pre-fix memory placement
+2026-11-25,ps4-pro,Qwen3-0.6B,Q8_0,0.59,vulkan,99,GGML_VK_PREFER_HOST_MEMORY=1,pp128,852.88,0.15,244640b,26.3.1+ps4-0001,7.3.4-strawberry+kfd-v3,write-combined weights
+2026-11-25,ps4-pro,Qwen3-0.6B,Q8_0,0.59,vulkan,99,GGML_VK_PREFER_HOST_MEMORY=1,tg32,73.32,0.00,244640b,26.3.1+ps4-0001,7.3.4-strawberry+kfd-v3,write-combined weights
+2026-11-25,ps4-pro,Qwen3-4B,Q4_K_M,2.32,vulkan,99,GGML_VK_PREFER_HOST_MEMORY=1,pp128,142.01,0.00,244640b,26.3.1+ps4-0001,7.3.4-strawberry+kfd-v3,write-combined weights
+2026-11-25,ps4-pro,Qwen3-4B,Q4_K_M,2.32,vulkan,99,GGML_VK_PREFER_HOST_MEMORY=1,tg32,20.52,0.00,244640b,26.3.1+ps4-0001,7.3.4-strawberry+kfd-v3,write-combined weights; live llama-cli 20.0 tok/s
