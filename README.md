@@ -10,7 +10,19 @@ needed to reproduce it. The porting work behind these numbers (kernel KFD patche
 |---|---|---|---|---|
 | Qwen3-0.6B | Q8_0 | 853 tok/s | **73.3 tok/s** | 3.2× |
 | Qwen3-4B | Q4_K_M | 142 tok/s | **20.5 tok/s** | 3.7× |
-| 8B / 14B models, image generation | | *in progress* | | |
+| Qwen3-8B | Q3_K_S (3.5 GiB) | 70 tok/s | **9.4 tok/s** | — |
+| Qwen3-8B | Q4_K_M (4.7 GiB, partial offload ngl 30) | 22 tok/s | 7.7 tok/s | — |
+| Phi-4 14B | Q3_K_S (6.1 GiB, ngl 18) | 19 tok/s | 2.1 tok/s | — |
+| Qwen3-14B | Q4_K_M (8.4 GiB > RAM, HDD paging) | 1.1 tok/s | **0.01 tok/s** (unusable) | — |
+
+**Limits on an 8 GB PS4 Pro:**
+- **Full GPU offload** works up to a ~3.5 GiB model file. Bigger fails cleanly with "device lost", not a hang.
+- **8B at Q3** is the sweet spot.
+- **Models larger than RAM** page from the 5400 rpm HDD at ~100 s/token.
+- **Swap** takes the system down.
+- **zram** doesn't help, because quantized weights don't compress (~1%).
+
+Image generation: stable-diffusion.cpp (Vulkan) is built; benchmarks are *in progress*.
 
 All rows, including pre-fix and CPU-only baselines, are in [`results/llm.csv`](results/llm.csv). Memory
 bandwidth measurements are in [`results/memory_bandwidth.csv`](results/memory_bandwidth.csv).

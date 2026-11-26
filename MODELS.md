@@ -11,4 +11,6 @@ script writes a `LICENSE_RECEIPT.txt` next to the weights.
 | Qwen3-8B | `Qwen/Qwen3-8B-GGUF` @ `7c41481f` | Qwen3-8B-Q4_K_M.gguf | `d98cdcbd…745785` | Apache-2.0 |
 | Granite-3.3-8B-Instruct | `ibm-granite/granite-3.3-8b-instruct-GGUF` @ `e40e9dd7` | granite-3.3-8b-instruct-Q4_K_M.gguf | `77bcee06…215dca` | Apache-2.0 |
 | Phi-4 (14B) | `microsoft/phi-4-gguf` @ `6edc2ef6` | phi-4-Q3_K_S.gguf | `df1d679c…65a745` | MIT |
-| Qwen3-14B | `Qwen/Qwen3-14B-GGUF` @ `530227a7` | Qwen3-14B-Q4_K_M.gguf | (pending) | Apache-2.0 |
+| Qwen3-14B | `Qwen/Qwen3-14B-GGUF` @ `530227a7` | Qwen3-14B-Q4_K_M.gguf | `500a8806…6b81f0` | Apache-2.0 |
+| Qwen3-8B | `unsloth/Qwen3-8B-GGUF` @ `a6adef13` | Qwen3-8B-Q3_K_S.gguf | `d9ba9488…827f15` | Apache-2.0 |
+| Granite-3.3-8B-Instruct | `ibm-granite/granite-3.3-8b-instruct-GGUF` @ `e40e9dd7` | granite-3.3-8b-instruct-Q3_K_S.gguf | `824abd81…a33c7d` | Apache-2.0 |
