@@ -15,6 +15,32 @@ needed to reproduce it. The porting work behind these numbers (kernel KFD patche
 | Phi-4 14B | Q3_K_S (6.1 GiB, ngl 18) | 19 tok/s | 2.1 tok/s | — |
 | Qwen3-14B | Q4_K_M (8.4 GiB > RAM, HDD paging) | 1.1 tok/s | **0.01 tok/s** (unusable) | — |
 
+## Round 2: current small models (PrismML llama.cpp fork `f702476`, Vulkan)
+
+| model | quant | GiB | prompt (pp128) | generation (tg32) | CPU tg | 16k ctx | quality (3 prompts) |
+|---|---|---|---|---|---|---|---|
+| **Gemma-4-E2B-it** | IQ4_XS | 2.78 | 255 tok/s | **27.0 tok/s** | 7.5 | ✅ | **3/3** |
+| Ternary-Bonsai-2-2B | PQ2_0 | 0.48 | 368 tok/s | **43.0 tok/s** | 10.7 | ✅ (988 MiB GTT) | 2/3 |
+| Qwen3.5-4B | Q4_0 | 2.41 | 157 tok/s | 23.7 tok/s | 4.6 | ✅ | 2/3 |
+| Spark-X2.6-4B | Q4_K_M | 3.30 | 137 tok/s | 20.2 tok/s | 5.0 | ✅ (mmap) | 2/3 |
+| Qwen3-4B (round-1 model, this build) | Q4_K_M | 2.32 | 137 tok/s | 20.1 tok/s | — | — | 3/3 |
+| **Ternary-Bonsai-2-9B** | PQ2_0 | 2.25 | 86 tok/s | **14.2 tok/s** | 2.8 | ✅ | 3/3 |
+| Ternary-Bonsai-2-9B | Q2_0 | 2.38 | 85 tok/s | 14.1 tok/s | — | — | — |
+| Ternary-Bonsai-2-9B | PTQ1_0 | 1.86 | 58 tok/s | 10.8 tok/s | 1.8 | — | same as PQ2_0 |
+| Gemma-4-E4B-it | Q3_K_S | 3.60 | 114 tok/s | 11.1 tok/s | 3.6 | ✅ (mmap) | 2/3 |
+| Qwen3.5-9B (ngl 28, partial) | Q3_K_S | 4.02 | 40 tok/s | 5.8 tok/s | — | — | 3/3 |
+
+- **Best overall:** Gemma-4-E2B, `-ngl 99 -lm none`. It is the only fast model that passed all three prompts.
+- **A 9B model fully on the GPU:** Ternary-Bonsai-2-9B PQ2_0 fits in 2.25 GiB and generates at 14.2 tok/s. That is 1.5× the best round-1 8B and 2.4× Qwen3.5-9B at Q3.
+- **Ternary quants run on the GPU, not the CPU:** the PrismML fork ships Vulkan shaders for PQ2_0, PTQ1_0 and Q2_0, and they work on gfx7.
+- **Quality is a smoke test, not a ranking.** There is one trial per prompt at temp 0:
+  - (a) Paris / Seine
+  - (b) a code-only `is_prime`
+  - (c) "17 sheep, all but 9 run away"
+
+  Every model passed (a) and (b). The 2/3 models answered "8" on (c).
+- **Use `-lm mmap` near the GTT cap.** This fork loads without mmap by default, and Gemma-E4B and Qwen3.5-9B fail to load that way.
+
 **Limits on an 8 GB PS4 Pro:**
 - **Full GPU offload** works up to a ~3.5 GiB model file. Bigger fails cleanly with "device lost", not a hang.
 - **8B at Q3** is the sweet spot.
