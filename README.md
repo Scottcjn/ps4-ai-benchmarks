@@ -22,7 +22,21 @@ needed to reproduce it. The porting work behind these numbers (kernel KFD patche
 - **Swap** takes the system down.
 - **zram** doesn't help, because quantized weights don't compress (~1%).
 
-Image generation: stable-diffusion.cpp (Vulkan) is built; benchmarks are *in progress*.
+## Image generation (512×512, stable-diffusion.cpp Vulkan)
+
+| model | steps | seconds per image | vs CPU |
+|---|---|---|---|
+| SDXS-512 | 1 | **2.9 s** | — |
+| SD1.5 + LCM-LoRA | 4 | **22 s** | 9.4× faster (CPU: 206 s) |
+| SD1.5 | 20 | 75 s | — |
+| Segmind-Vega (SDXL-class) | 20 | 104 s | — |
+
+Every image was checked by eye and is coherent; the GPU and CPU LCM runs produce the same picture.
+Fitting in ~3.9 GiB GTT needs `--auto-fit off`, `--batched-cfg off` (20-step runs) and
+`--lora-apply-mode at_runtime` (LCM). Full rows: [`results/image_gen.csv`](results/image_gen.csv).
+
+**LLM sanity check:** Qwen3-8B (Q3 and Q4), Granite-3.3-8B and Phi-4 all answer "Paris … the Seine" correctly at temp 0.
+On the GPU, context above ~512 tokens pushes the 8B Q3 past the GTT cap; partial offload needs `-lm mmap`.
 
 All rows, including pre-fix and CPU-only baselines, are in [`results/llm.csv`](results/llm.csv). Memory
 bandwidth measurements are in [`results/memory_bandwidth.csv`](results/memory_bandwidth.csv).

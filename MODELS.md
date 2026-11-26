@@ -14,3 +14,14 @@ script writes a `LICENSE_RECEIPT.txt` next to the weights.
 | Qwen3-14B | `Qwen/Qwen3-14B-GGUF` @ `530227a7` | Qwen3-14B-Q4_K_M.gguf | `500a8806…6b81f0` | Apache-2.0 |
 | Qwen3-8B | `unsloth/Qwen3-8B-GGUF` @ `a6adef13` | Qwen3-8B-Q3_K_S.gguf | `d9ba9488…827f15` | Apache-2.0 |
 | Granite-3.3-8B-Instruct | `ibm-granite/granite-3.3-8b-instruct-GGUF` @ `e40e9dd7` | granite-3.3-8b-instruct-Q3_K_S.gguf | `824abd81…a33c7d` | Apache-2.0 |
+
+## Image models (all ungated)
+
+| model | repo | file | license |
+|---|---|---|---|
+| SD1.5 | `Comfy-Org/stable-diffusion-v1-5-archive` | v1-5-pruned-emaonly-fp16.safetensors | CreativeML OpenRAIL-M |
+| LCM-LoRA SD1.5 | `latent-consistency/lcm-lora-sdv1-5` | pytorch_lora_weights.safetensors | OpenRAIL++ |
+| SDXS-512 | `akleine/sdxs-512` | sdxs.safetensors | OpenRAIL++ |
+| Segmind-Vega | `segmind/Segmind-Vega` | segmind-vega.safetensors | Apache-2.0 |
+
+These repos ship no LICENSE file; the license comes from the model card, saved with each download.

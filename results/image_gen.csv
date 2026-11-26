@@ -1,0 +1,6 @@
+date,hardware,model,steps,sampler,cfg,resolution,backend,s_per_image,s_per_step,load_s,sampling_s,vae_s,peak_ram_mib,peak_gtt_mib,image_ok,flags,software,notes
+2026-11-26,ps4-pro,SDXS-512,1,default,,512x512,vulkan,2.9,0.6,0.8,1.0,0.6,2294,860,yes,,sd.cpp master-1133-52491bd + mesa 26.3.1+ps4-0001,slightly painterly
+2026-11-26,ps4-pro,SD1.5 + LCM-LoRA,4,lcm,1.0,512x512,vulkan,22.0,1.80,2.1,9.7,10.3,3781,2593,yes,--auto-fit off --lora-apply-mode at_runtime,sd.cpp master-1133-52491bd + mesa 26.3.1+ps4-0001,VAE tiled
+2026-11-26,ps4-pro,SD1.5,20,euler_a,7,512x512,vulkan,74.8,3.01,3.2,62.6,9.6,3751,2462,yes,--auto-fit off --batched-cfg off,sd.cpp master-1133-52491bd + mesa 26.3.1+ps4-0001,unbatched CFG (batched does not fit); VAE tiled
+2026-11-26,ps4-pro,Segmind-Vega,20,euler_a,7,512x512,vulkan,103.8,2.02,41,57.9,11.1,3950,1569,yes,--auto-fit off --batched-cfg off --backend te=cpu,sd.cpp master-1133-52491bd + mesa 26.3.1+ps4-0001,text encoders on CPU; 3 GB file not page-cached
+2026-11-26,ps4-pro,SD1.5 + LCM-LoRA,4,lcm,1.0,512x512,cpu,206.5,29.64,13,131.3,71.8,4379,8,yes,--backend cpu,sd.cpp master-1133-52491bd,CPU baseline; same picture as GPU run
