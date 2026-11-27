@@ -1,0 +1,10 @@
+date,model,quant,build,ngl,load_mode,intervals_pass,intervals_n,expr_pass,expr_n,lru_pass,lru_n,total_pass,total_n,notes
+2026-11-27,Ternary-Bonsai-2-9B,PQ2_0,prism-f702476,99,none,9,9,4,14,9,9,22,32,
+2026-11-27,Qwen3-4B,Q4_K_M,prism-f702476,99,none,9,9,2,14,9,9,20,32,
+2026-11-27,Qwen3.5-9B,Q3_K_S,prism-f702476,28,mmap,9,9,1,14,9,9,19,32,partial offload; slowest (135 s for expr)
+2026-11-27,Gemma-4-E2B-it,IQ4_XS,prism-f702476,99,none,9,9,0,14,9,9,18,32,expr truncated at 1500 tokens (verbose comments)
+2026-11-27,Gemma-4-E4B-it,Q3_K_S,prism-f702476,99,mmap,9,9,0,14,9,9,18,32,expr truncated at 1500 tokens (verbose comments)
+2026-11-27,Spark-X2.6-4B,Q4_K_M,prism-f702476,99,mmap,9,9,0,14,9,9,18,32,expr: TypeError in generated parser
+2026-11-27,Qwen3.5-4B,Q4_0,prism-f702476,99,none,6,9,0,14,9,9,15,32,expr: infinite loop (20 s timeout)
+2026-11-27,Ternary-Bonsai-2-2B,PQ2_0,prism-f702476,99,none,0,9,0,14,9,9,9,32,intervals: crash
+2026-11-27,Qwen3-8B,Q3_K_S,prism-f702476,99,mmap,,9,,14,,9,,32,did not load: device lost (GTT out of memory at -c 4096)
