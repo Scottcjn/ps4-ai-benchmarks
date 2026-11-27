@@ -4,16 +4,28 @@ Measured LLM and image-generation performance on PlayStation 4 hardware running 
 needed to reproduce it. The porting work behind these numbers (kernel KFD patches, Mesa fixes, PM4 bridge) is in
 **[Scottcjn/ps4-rocm](https://github.com/Scottcjn/ps4-rocm)**.
 
-## Headline (PS4 Pro, GPU via patched Mesa Vulkan, llama.cpp `244640b`)
+## Headline (PS4 Pro, GPU via patched Mesa Vulkan, llama.cpp `244640b`, `-fa 0`)
 
-| model | quant | prompt (pp128) | generation (tg32) | vs 8-core CPU (tg) |
-|---|---|---|---|---|
-| Qwen3-0.6B | Q8_0 | 853 tok/s | **73.3 tok/s** | 3.2× |
-| Qwen3-4B | Q4_K_M | 142 tok/s | **20.5 tok/s** | 3.7× |
-| Qwen3-8B | Q3_K_S (3.5 GiB) | 70 tok/s | **9.4 tok/s** | — |
-| Qwen3-8B | Q4_K_M (4.7 GiB, partial offload ngl 30) | 22 tok/s | 7.7 tok/s | — |
-| Phi-4 14B | Q3_K_S (6.1 GiB, ngl 18) | 19 tok/s | 2.1 tok/s | — |
-| Qwen3-14B | Q4_K_M (8.4 GiB > RAM, HDD paging) | 1.1 tok/s | **0.01 tok/s** (unusable) | — |
+Re-measured 2026-11-27 with flash attention **off** (`-fa 0`), which is faster on this GPU (see Round 3). The
+"fa on" column is the same session with `-fa 1` and matches the original 2026-11-25 numbers.
+
+| model | quant | prompt (pp128) | generation (tg32) | tg with fa on | vs 8-core CPU (tg) |
+|---|---|---|---|---|---|
+| Qwen3-0.6B | Q8_0 | 1036 tok/s | **110.4 tok/s** | 73.2 | 4.8× |
+| Qwen3-4B | Q4_K_M | 154 tok/s | **22.5 tok/s** | 20.5 | 4.0× |
+| Qwen3-8B | Q3_K_S (3.5 GiB, `-lm none`) | 73 tok/s | **9.8 tok/s** | 9.4 | — |
+| Qwen3-8B | Q4_K_M (4.7 GiB, partial offload ngl 30, `-lm mmap`) | 71 tok/s | 8.1 tok/s | 8.0 | — |
+| Phi-4 14B | Q3_K_S (6.1 GiB, ngl 18, `-lm mmap`) | 30 tok/s | 2.1 tok/s | 2.1 | — |
+| Qwen3-14B | Q4_K_M (8.4 GiB > RAM, HDD paging) | 1.1 tok/s | **0.01 tok/s** (unusable) | — | — |
+
+- **Fa off gains the most on small, fully-offloaded models** (+51% on 0.6B, +10% on 4B). For partial offload the
+  CPU layers dominate and fa makes no difference.
+- **Partial-offload prompt numbers are warm-cache.** With `-lm mmap` the first run in a session reads weights from
+  the HDD; Phi-4 pp128 measured 1.2 tok/s cold vs 30 warm. The original 22 / 19 tok/s prompt figures for these
+  rows were cold-cache, not slower GPU work.
+- **Set the load mode explicitly.** On this build `-lm auto` turns mmap off on the PS4's Vulkan device, so the
+  partial-offload rows fail with "device lost" (out of GTT) unless you pass `-lm mmap`.
+- The Qwen3-14B row was not re-run (it pages from disk at any setting).
 
 ## Round 2: current small models (PrismML llama.cpp fork `f702476`, Vulkan)
 
@@ -94,8 +106,8 @@ Profiling with `GGML_VK_PERF_LOGGER` explains it:
 - The GPU is busy for ~99% of each token, so there's no CPU or dispatch overhead to recover.
 - The flash-attention decode shader is 43% of Qwen3-0.6B's token time.
 
-**Use `-fa 0` on PS4 for small models.** The earlier tg numbers above were measured with the default setting, so they
-are not the ceiling. A full re-run with `-fa 0` is planned.
+**Use `-fa 0` on PS4 for small models.** The headline table at the top was re-measured with `-fa 0` (2026-11-27).
+The Round 2 table above still uses the default setting, so its small-model tg numbers are not the ceiling.
 
 ### Kernel v4 and an env-var gotcha
 
@@ -150,7 +162,7 @@ the token generation. [`METHODOLOGY.md`](METHODOLOGY.md) explains how we found i
 # on the PS4, with ps4-rocm's patched Mesa installed to ~/mesa-ps4
 export VK_ICD_FILENAMES=$HOME/mesa-ps4/share/vulkan/icd.d/radeon_icd.x86_64.json
 export GGML_VK_PREFER_HOST_MEMORY=1
-llama-bench -m Qwen3-4B-Q4_K_M.gguf -ngl 99 -p 128 -n 32 -r 2
+llama-bench -m Qwen3-4B-Q4_K_M.gguf -ngl 99 -fa 0 -p 128 -n 32 -r 2
 ```
 
 ⚠️ **Never run llama.cpp on PS4 with the stock Mesa driver**, even at `-ngl 0`: it hangs the GPU.
